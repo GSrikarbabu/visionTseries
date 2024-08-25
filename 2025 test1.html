@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+ <title>TEST 1 2025</title>
+ <link rel="stylesheet" href="style.css">
+<style>
+
+body{
+ margin:0;
+ background-color:#060404;
+ font-family: "Comic Sans MS", "Comic Sans";
+ background-image: url('21.png');
+ background-filter: brightness(40%);
+ background-repeat: no-repeat;
+ background-attachment: fixed;  
+ background-size: cover;
+}
+
+*{
+ box-sizing: border-box;
+}
+
+
+
+
+
+/* CSS for the hint box */
+.hint-box {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fefefe;
+    border: 1px solid #888;
+    width: 400px;
+    padding: 20px;
+    z-index: 9999;
+}
+
+.hint-content {
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+}
+
+
+
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+}
+
+.quiz-container{
+ max-width: 700px;
+ min-height:500px;
+ background-color: #ffffff;
+ margin:40px auto;
+ opacity:.9;
+ border-radius:10px;
+ padding:30px;
+ style="max-width:100%;height:auto;
+}
+.quiz-container::after,.quiz-container::before{
+ content: '';
+ clear: both;
+ display: table;
+}
+.question-number,
+.question,
+.options,
+.button,
+.answers-tracker{
+ float: left;
+ width: 100%;
+}
+.question-number h3{
+ color:#009688;
+ border-bottom: 1px solid #ccc;
+ margin:0;
+ padding-bottom:10px;
+}
+
+.question {
+ font-size:22px;
+ color:000000;
+ padding:20px 0;
+}
+
+.options div{
+  background-color: #cccccc;
+  font-size:16px;
+  color:000000;
+  margin-bottom:10px;
+  border-radius:5px;
+  padding:15px;
+  position: relative;
+  overflow:hidden;
+  cursor: pointer;
+}
+.options div.disabled{
+ pointer-events: none;
+}
+.options div.correct{
+ z-index: 1;
+ color: #fff;
+}
+.options div.correct::before{
+ content: '';
+ position: absolute;
+ left:0;
+ top:0;
+ width: 100%;
+ height: 100%;
+ background-color: green;
+ z-index: -1;
+ animation: animateBackground 1s ease;
+ animation-fill-mode: forwards;
+}
+.options div.wrong{
+ z-index: 1;
+ color: #fff;
+}
+.options div.wrong::before{
+ content: '';
+ position: absolute;
+ left:0;
+ top:0;
+ width: 100%;
+ height: 100%;
+ background-color:white;
+ z-index: -1;
+ animation: animateBackground 1s ease;
+ animation-fill-mode: forwards;
+}
+
+.button .btn{
+ padding:15px 50px;
+ border-radius:5px;
+ cursor: pointer;
+ background-color:#009688;
+ font-size:16px;
+ color:#ffffff;
+ border: none;
+ display: inline-block;
+ margin:15px 0 20px;
+}
+
+.answers-tracker div.correct{
+ background-color: green;
+ background-image:url('img/correct.png');
+ background-position: center;
+ background-repeat: no-repeat;
+ background-size: 50%;
+}
+
+.answers-tracker div.wrong{
+ background-color: white;
+ background-image:url('img/wrong.png');
+ background-position: center;
+ background-repeat: no-repeat;
+ background-size: 50%;
+}
+
+.quiz-over{
+ position: fixed;
+ left:0;
+ top:0;
+ width: 100%;
+ height: 100%;
+ background-color:rgba(0,0,0,0.9);
+ z-index: 10;
+ display: none;
+ align-items: center;
+ justify-content: center;
+}
+.quiz-over.show{
+ display: flex;
+}
+.quiz-over .box{
+ background-color: #009688;
+ padding:30px;
+ border-radius:10px;
+ text-align: center;
+ flex-basis: 400vw;
+ max-width:700px;
+ color:#ffffff;
+}
+
+.quiz-over .box h1{
+ font-size:20px auto;
+ margin:0 0 20px;
+}
+
+.quiz-over .box button{
+ padding:15px 50px;
+ border:none;
+ background-color:#FF9800;
+ border-radius:5px;
+ font-size:16px;
+ margin:15px 0 20px;
+ color:#ffffff;
+}
+
+
+</style>
+</head>
+<body>
+     <div class="quizContainer container-fluid well well-lg">
+        <div id="quiz1" class="text-center">
+            <h1 style="color:#ffffff;position:center;left:80%;top:0%;" align="Center">
+                <span id="X">VISION TEST 1 <br>POLITY </span>
+                <br/>
+                <span id='X' style="font-size:25px;"></span>
+            </h1>
+            <h2 Style="color:#ffffff;position:center;left:80%;top0%;" align="center" "font-size:25px;">
+                <samp id="Sub heading"> </samp>
+            </h2>
+        </div>
+        <div class="quiz-container">
+            <div class="question-number">
+                <h3>Question <span class="question-num-value"></span> of <span class="total-question"></span></h3>
+            </div>
+            <div class="question"></div>
+			<!-- <button type="button" class="hint-btn" onclick="showHint()">&#128161;</button> Add this line -->
+			<!--<button type="button" class="hint-btn" onclick="showHint()">&#128161;</button>--> <!-- Bulb icon Unicode -->
+            <div class="options">
+                <div id="1" class="option1" onclick="check(this)"></div>
+                <div id="2" class="option2" onclick="check(this)"></div>
+                <div id="3" class="option3" onclick="check(this)"></div>
+                <div id="4" class="option4" onclick="check(this)"></div>
+            </div>
+            <div class="button">
+                <button type="button" class="btn" onclick="next()">Next</button>
+            </div>
+            <div class="answers-tracker"></div>
+        </div>
+		<!-- Modal for hint -->
+<!--<div id="hintModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="hintText"></p>-->
+    </div>
+</div>
+<div id="hintBox" class="hint-box">
+    <div class="hint-content">
+        <span class="close" onclick="hideHintBox()">&times;</span>
+        <div id="hintText"></div>
+    </div>
+</div>
+
+        <div class="quiz-over">
+            <div class="box">
+                <h1>
+                    Good Try!<br>
+                    You Got <span class="correct-answers"></span> out of <span class="total-question2"></span> answers correct! <br>
+                    That's <span class="percentage"></span>
+                </h1>
+                <button type="button" onclick="tryAgain()">Try Again</button>
+            </div>
+        </div>
+
+        <script src="script.js"></script>
+        <script>
+            const options=document.querySelector(".options").children;
+            const answerTrackerContainer=document.querySelector(".answers-tracker");
+            const questionNumberSpan=document.querySelector(".question-num-value");
+            const totalQuestionSpan=document.querySelector(".total-question");
+            const correctAnswerSpan=document.querySelector(".correct-answers");
+            const totalQuestionSpan2=document.querySelector(".total-question2");
+            const percentage=document.querySelector(".percentage");
+            const question=document.querySelector(".question");
+            const op1=document.querySelector(".option1");
+            const op2=document.querySelector(".option2");
+            const op3=document.querySelector(".option3");
+            const op4=document.querySelector(".option4");
+            let questionIndex = 0;
+            let score = 0;
+
+            // questions and options and answers
+            const questions=[
+               
+   {
+    q:'<b>Consider the following statements regarding the identities provided by the Constitution:</b><br><br>1. A constitution provides a collective identity to people when they agree to basic norms.<br>2. Constitutional norms provide a political identity but not a moral one.<br>Which of the statements given above is/are correct?',
+    options:['1 only','2 only','Both 1 and 2 ','Neither 1 nor 2'],
+    answer:1
+   },
+   {
+    q:'<b>How many of the following protections are available as a fundamental right under the constitution to a person detained under a preventive detention law?</b><br><br>1. The grounds of detention should be communicated to the detenu even if it is against the public interest.<br>2. The detenu must be released after 24 hours unless the magistrate authorises further detention.<br>3. The detenu must be offered an opportunity to make a representation against the detention order.<br>Select the correct answer using the code given below.',
+    options:['Only one','Only two','All three ','None'],
+    answer:1
+   },
+   {
+    q:'<b>Which among the following is not a feature of Directive Principles of State Policy (DPSP)?</b>',
+    options:['It is the duty of the State to apply these principles in making laws.','They help the courts in examining and determining the constitutional validity of a law.','They operate as limitations on the tyranny of the executive and arbitrary laws of the legislature.','All statements (a), (b) and (c) are features of DPSP.'],
+    answer:3
+   },
+   {
+    q:'<b>Which of the following best describes the concept of Constitutionalism?</b>',
+    options:['It is an ideology which promotes supremacy of a written Constitution.','It means the Constitution is necessary in a democratic country.','It denotes the principle that the government derives its authority from a body of fundamental law and is limited by it. ','It means that the Constitution must provide certain inalienable rights to the citizens'],
+    answer:3
+   },
+   {
+    q:'<b>Which of the following is the objective of “Operation AMRITH”?</b>',
+    options:['To clean the waters of the rivers of Himalayas.','To prevent the overuse of antibiotics.','To build houses for the poorest of poor. ','To clean the roads of the metro cities.'],
+    answer:2
+   },
+   {
+    q:'<b>Which among the following is the fundamental objective of Directive Principle of State Policy?</b>',
+    options:['Equality of status and opportunity','Political Justice','Social and Economic Democracy ','Liberty of Faith'],
+    answer:3
+   },
+   {
+    q:'<b>Consider the following statements regarding the National Commission of Scheduled Tribes (NCST):</b><br><br>1. It was created through the 89th Constitutional Amendment Act of 2003.<br>2. The conditions of service and tenure of the Chairperson and members are determined by the President.<br>3. The Commission, while inquiring into any complaint, has all the powers of a civil court.<br>How many statements given above are correct?',
+    options:['Only one','Only two','All three','None'],
+    answer:3
+   },
+   {
+    q:'<b>How many of the following are the Socialist principles that are reflected in the Directive Principles of State Policy?</b><br><br>1. To promote equal justice and to provide free legal aid to the poor.<br>2. To organise village panchayats and enable them to function as units of self-government.<br>3. To make provision for just and humane conditions for work and maternity relief.<br>Select the correct answer using the code given below.',
+    options:['Only one','Only two','All three','None'],
+    answer:2
+   },
+   {
+    q:'<b>How many of the following Directive Principles were added by the 42nd Constitutional Amendment Act, 1976?</b><br><br>1. To secure opportunities for the healthy development of children.<br>2. To promote equal justice and to provide free legal aid to the poor.<br>3. To minimise inequalities in income, status, facilities and opportunities.<br>Select the correct answer using the code given below.',
+    options:['Only one','Only two','All three','None'],
+    answer:2
+   },
+   {
+    q:'<b>A new state can be formed by uniting two or more states through a bill passed by:</b>',
+    options:['A simple majority in Parliament','A simple majority in state assemblies of both the states','A Special majority in the parliament and ratification by half of the states ','Presidential resolution'],
+    answer:1
+   },
+
+   // 10 questions completed
+   {
+    q:'<b>Himalayan Wolf was in the news recently. In this context, which of the following statements regarding the Himalayan Wolf is correct?</b>',
+    options:['It is the only species of wolf that is found in India.','It is naturally found in the Trans-Himalayan region only.','It has been categorised as ‘Endangered’ on the International Union for Conservation of Nature Red List of Threatened Species (IUCN). ','None of the statements (a), (b) and (c) are correct.'],
+    answer:4
+   },
+   {
+    q:'<b>Consider the following statements with respect to the Central Bureau of Investigation (CBI):</b><br><br>1. It derives its powers from the Delhi Special Police Establishment Act, of 1946.<br>2. It functions under the Prime Minister’s Office.<br>3. It investigates crimes of corruption and economic offenses.<br>Which of the statements given above are correct?',
+    options:['1 and 2 only','2 and 3 only','1 and 3 only ','1, 2 and 3'],
+    answer:3
+   },
+   {
+    q:'<b>In context to the Akash-NG (New Generation) missile, consider the following statements:</b><br><br>1. Akash-NG is a surface-to-air missile.<br>2. The missile system is equipped with a ramjet engine.<br>3. It is indigenously designed and developed solely by the Defence Research and Development Organisation.<br>4. The missile system can be launched from both stationary and mobile platforms.<br>How many of the statements given above are correct?',
+    options:['Only one','Only two','Only three ','All four'],
+    answer:2
+   },
+    {
+    q:'<b> Consider the following pairs: </b><br><table><tr><th>Body</th><th>Chairperson</th></tr><tr><td>State Disaster Management Authority</td><td>Chief Minister</td></tr><tr><td>NITI Aayog</td><td>Prime Minister</td></tr><tr><td>National Disaster Management Authoritya</td><td>Union Home Minister</td></tr></table><br>How many of the above pairs are correctly matched?',
+    options:['Only one','Only two','All three ','None'],
+    answer:2
+   },
+   {
+    q:'<b>How many of the following Supreme Court cases are related to disputes/conflicts between Fundamental Rights and Directive Principles of State Policy?</b><br><br>1. IR Coehlo Case, 2007<br>2. Golaknath case, 1967<br>3. Maneka Gandhi case, 1980<br>4. Minerva Mill Case, 1980<br>Select the correct answer using the code given below.',
+    options:['Only two','Only three','All four','None'],
+    answer:1
+   },
+   {
+    q:'<b>With reference to the President’s rule in a state, consider the following:<br><br>1. Reduction of powers of the concerned state high court<br>2. Dismissal of the state council of ministers<br>3. Curtailment of Fundamental rights of citizens under Article 19<br>How many of the above are necessarily the consequence of the proclamation of President’s rule in a state?</b>',
+    options:['Only one','Only two','All three ','None'],
+    answer:1
+   },
+   {
+    q:'<b>How many of the following options the President has with regards to the Constitutional Amendment Bill passed by both the Houses of Parliament? </b><br><br> 1. He can withhold the assent of the bill.<br>2. He can return the bill for reconsideration.<br>3. He gives assent to the bill<br>Select the correct answer using the code given below.',
+    options:['Only one','Only two','All three ','None'],
+    answer:1
+   },
+   {
+    q:'<b>Which of the following has defined what constitutes the ‘Doctrine of Basic Structure’?</b>',
+    options:['Parliament','Supreme Court','Constitution of India ','None of the above'],
+    answer:4
+   },
+   {
+    q:'<b>Which of the following functions are performed by the National Commission of Scheduled Castes (NCSC)?</b><br><br>1. To investigate and monitor all matters relating to the legal safeguards for the SCs<br>2. To provide safeguards against the exploitation of the Anglo-Indian community<br>3. To report to the President on the working of constitutional safeguards provided for SCs<br>Select the correct answer using the code given below.',
+    options:['1 and 2 only','2 and 3 only','1 and 3 only ','1, 2 and 3'],
+    answer:4
+   },
+   {
+    q:'<b>It separated, for the first time, the legislative and executive functions of the Governor-General’s council. In other words, it established a separate Governor-General’s legislative council which came to be known as the Indian (Central) Legislative Council. This legislative wing of the council functioned as a mini-parliament, adopting the same procedures as the British Parliament. Which of the following Acts has been described by the passage given above?</b>',
+    options:['Government of India Act, 1858','Charter Act, 1853','Indian Councils Act, 1861 ','Government of India Act, 1919'],
+    answer:2
+   },
+
+   //20 questions completed
+   {
+    q:'<b>Which of the following statements best describes the relation between liberty and equality?</b>',
+    options:['Without equality, liberty would produce the supremacy of the few over the many.','Equality is a hindrance to liberty (individual freedom).','Liberty and equality are mutually exclusive; one cannot coexist with the other. ','Equality is only necessary for the privileged few, whereas liberty benefits everyone.'],
+    answer:1
+   },
+   {
+    q:'<b>The term ‘Operation Prosperity Guardian’ was recently seen in the news. It is aimed at aiding the safe movement of ships in:</b>',
+    options:['Indian Ocean','Red Sea','South China sea ','Baltic Sea'],
+    answer:2
+   },
+   {
+    q:'<b>Consider the following:<br><br>1. President<br>2. Lok Sabha<br>3. Rajya Sabha<br>4. Legislative assemblies<br>5. Legislative councils<br>How many of the above are compulsorily involved in all the constitutional amendment processes?</b>',
+    options:['Only two','Only three','Only four ','All five'],
+    answer:2
+   },
+   {
+    q:'<b>Consider the following statements with respect to the members of the Central Vigilance Commission (CVC):<br><br>1. The members of the CVC are appointed by the President by warrant under his hand and seal.<br>2. The members of the CVC hold office for a term of six years or until they attain the age of seventy, whichever is earlier.<br>3. The president can also remove the Central Vigilance Commissioner on the grounds of proven misbehavior or incapacity.<br>How many of the statements given above are correct?</b>',
+    options:['Only one','Only two','All three ','None'],
+    answer:2
+   },
+   {
+    q:'<b>With reference to national emergency, consider the following statements:<br>1. The Center becomes entitled to give executive directions to a state on any matter.<br>2. The legislative power of a state legislature is suspended.<br>3. The power to modify the constitutional distribution of revenues between the center and the states is vested in Parliament.<br>How many statements given above are correct?</b>',
+    options:['Only one','Only two','All three ','None'],
+    answer:1
+   },
+   {
+    q:'<b>Consider the following corporations/ authorities:<br><br>1. Reserve Bank of India<br>2. Food Corporation of India<br>3. State Bank of India<br>4. Life Insurance Corporation of India<br>How many of the above are totally and directly audited by the Comptroller and Auditor General of India (CAG)?</b>',
+    options:['Only two','Only three','All four ','None'],
+    answer:4
+   },
+   {
+    q:'<b>Consider the following events:<br><br>1. Goa was conferred full statehood<br>2. Creation of the state of Haryana<br>3. Inclusion of the state of Sikkim in the Indian Union<br>4. Formation of the state of Nagaland Arrange the above given events in the correct chronological order of their occurrence.</b>',
+    options:['1-3-4-2','4-2-3-1','2-4-1-3 ','1-2-3-4'],
+    answer:2
+   },
+   {
+    q:'<b>Consider the following statements with reference to the post-independence reorganization of states:<br><br>1. The States Reorganisation Commission accepted the theory of ‘one language one state’.<br>2. Andhra Pradesh was the first state created after the acceptance of the recommendations of the state reorganization committee.<br>Which of the statements given above is/are correct?</b>',
+    options:['1 only','2 only','Both 1 and 2 ','Neither 1 nor 2'],
+    answer:4
+   },
+   {
+    q:'<b>Consider the following functions:<br>1. Ratification of India’s membership of the Commonwealth<br>2. Adopting the National Anthem of India<br> 3. Enactment of ordinary laws<br>How many of the above functions were performed by the Constituent Assembly of India?</b>',
+    options:['Only one','Only two','All three ','None'],
+    answer:3
+   },
+   {
+    q:'<b>What is common between Bailadila, Kudremukh and Mayurbhanj?</b>',
+    options:['They are gold mining sites.','They are sites having bauxite reserves.','They are sites of iron ore reserves ','They are are sites of natural gas reserves.'],
+    answer:3
+   },
+
+   //completed 30
+
+   {
+    q:'<b>How many of the following are envisaged as the Right against Exploitation in the Constitution of India?<br><br>1. Protection against arrest and detention.<br>2. Prohibition of employment of children in factories.<br>3. Prohibition of traffic in human beings and forced labour<br>Select the correct answer using the code given below.</b>',
+    options:['Only one','Only two','All three ','None'],
+    answer:2
+   },
+   {
+    q:'<b>Which of the following are examples of White Goods?<br><br>1. Washing machines<br>2. Alcohol<br>3. Air conditioners<br>4. Luxury cars<br>Select the correct answer using the code given below.</b>',
+    options:['1 and 3 only','2, 3, and 4 only','1, 3 and 4 only ','1, 2 and 4 only'],
+    answer:1
+   },
+   {
+    q:'<b>Consider the following statements regarding the reorganization of the states:<br><br>1. An Indian territory can be ceded to a foreign country by a constitutional amendment.<br>2. A boundary dispute settlement between India and another country does not require a constitutional amendment.<br>Which of the statements given above is/are not correct?</b>',
+    options:['1 only','2 only','Both 1 and 2 ','Neither 1 nor 2'],
+    answer:4
+   },
+   {
+    q:'<b>With respect to the writ jurisdiction, consider the following statements:<br><br> 1. The writ of habeas corpus cannot be issued against the private individuals.<br> 2. The writ of prohibition is available only against the judicial bodies.<br> 3. The writ of quo-warranto can be sought even by a non-aggrieved person.<br> How many statements given above are correct?</b>',
+    options:['Only one','Only two','All three ','None'],
+    answer:1
+   },
+   {
+    q:'<b>Consider the following features:<br><br>1. Single Citizenship<br>2. Written Constitution<br>3. Integrated Judiciary<br>4. Rigidity of the Constitution<br>How many of the above are federal features of the Indian Constitution?</b>',
+    options:['Only one','Only two','Only three ','All four'],
+    answer:2
+   },
+   {
+    q:'<b>An Indian citizen may lose his/her citizenship when he/she:<br><br>1. Acquires the citizenship of any other foreign state during war.<br>2. Unlawfully trades or communicates with the enemy during a war.<br>3. Has been imprisoned in any country for two years after becoming a naturalized citizen within five years.<br>Select the correct answer using the code given below.</b>',
+    options:['Only one','Only two','All three ','None'],
+    answer:2
+   },
+   {
+    q:'<b>According to the Preamble of the Constitution, as adopted by the Constituent Assembly, how many of the following adjectives were used to define the Indian Republic?<br><br>1. Socialist<br> 2. Sovereign<br> 3. Secular<br> 4. Democratic<br> Select the correct answer using the code given below.</b>',
+    options:['Only one','Only two','Only three ','All four'],
+    answer:2
+   },
+   {
+    q:'<b>‘Bubble Baby’ syndrome was in the news. In this context, consider the following statements regarding the Bubble baby syndrome (BBS):<br><br>1. It is a heart disease seen in the babies and children affected by COVID-19.<br>2. The only treatment for BBS is a heart transplant.<br>Which of the statements given above is/are correct?</b>',
+    options:['1 only','2 only','Both 1 and 2 ','Neither 1 nor 2'],
+    answer:4
+   },
+   {
+    q:'<b>Consider the following statements with respect to Freedom of Religion enshrined in the Constitution:<br><br>1. It includes the freedom to not follow any religion.<br>2. It bars all religious conversions.<br>3. It is not applicable to foreign nationals<br>residing within Indian territory.<br>How many statements given above are correct?</b>',
+    options:['Only one','Only two','All three ','None'],
+    answer:1
+   },
+   {
+    q:'<b>Which of the following is the latest addition to the list of fundamental duties under the Constitution of India?</b>',
+    options:['To protect and improve the natural environment including forests, lakes, rivers and wildlife and to have compassion for living creatures.','To develop scientific temper, humanism and the spirit of inquiry and reform.','To provide opportunities for education to his child or ward between the age of six and fourteen years. ','To strive towards excellence in all spheres of individual and collective activity.'],
+    answer:3
+   },
+   // completed 40
+   {
+    q:'<b>Which of the following gives effect to the objective of the Preamble to secure for all its citizen equality, liberty and justice? </b>',
+    options:['Fundamental Rights','Directive Principles of State Policy','Fundamental Duties ','Power of Judicial Review'],
+    answer:1
+   },
+   {
+    q:'<b>Consider the following statements regarding the Urea gold:<br><br>1. It is a sulphur-coated Urea.<br>2. Sulphur coating ensures faster release of nitrogen.<br>Which of the statements given above is/are correct?</b>',
+    options:['1 only','2 only','Both 1 and 2 ','Neither 1 nor 2'],
+    answer:1
+   },
+   {
+    q:'<b>Consider the following statements regarding the Financial Intelligence Unit of India:<br><br>1. It is a central national agency responsible for receiving, processing, analyzing and disseminating information relating to suspect financial transactions.<br>2. It reports directly to the Economic Intelligence Council (EIC) headed by the Finance Minister.<br>Which of the statements given above is/are correct?</b>',
+    options:['1 only','2 only','Both 1 and 2 ','Neither 1 nor 2'],
+    answer:3
+   },
+   {
+    q:'<b>In order to ensure the independent and impartial functioning of the Election Commission of India (ECI), which of the following provisions was/were incorporated in the Constitution of India?<br><br>1. The Consitution has debarred the retiring election commissioners from any further appointment by the government.<br>2. The Chief Election Commissioner can be removed in the same manner and on the same grounds as a judge of the Supreme Court.<br>3. The Constitution has specified the term of all the members of ECI.<br>Select the correct answer using the code given below.</b>',
+    options:['2 only','1 and 3 only','2 and 3 only ','1, 2 and 3'],
+    answer:1
+   },
+   {
+    q:'<b>World Economic Situation and Prospects is published by:</b>',
+    options:['World Bank','United Nations Department of Economic and Social Affairs','International Monetary Fund ','World Economic Forum'],
+    answer:2
+   },
+   {
+    q:'<b>Which of the following happened earliest in the process of state reorganization after independence?</b>',
+    options:['Formation of S K Dhar committee','Formation of Andhra Pradesh','Formation of JVP committee ','Enactment of the State Reorganization Act'],
+    answer:1
+   },
+   {
+    q:'<b>In the context of Indian polity, consider the following:<br><br>1. Absence of special privileges for any person<br>2. Reasonable classification of persons<br>3. Equality of treatment under equal circumstances<br>How many of the above is/are ensured by Article 14 of the Indian Constitution?</b>',
+    options:['Only one','Only two','All three ','None'],
+    answer:3
+   },
+   {
+    q:'<b>Attorney General of India:<br><br>1. Has the right of an audience in all courts in India.<br>2. Is debarred from private legal practice.<br>3. Has the right to speak and vote in both houses of Parliament.<br>4. Enjoys all privileges and immunities that are available to a member of Parliament.<br>Which of the statements given above are correct?</b>',
+    options:['2 and 3 only','1 and 4 only','1, 2 and 3 only ','1, 2, 3 and 4'],
+    answer:2
+   },
+   {
+    q:'<b>Consider the following statements:<br><br>1 . President can declare a National Emergency on the ground of ‘internal disturbance’.<br>2. The president can proclaim a National Emergency only after receiving a written recommendation from the cabinet.<br>3. The proclamation of National Emergency must be approved by both the Houses of Parliament within two months from the date of its issue.<br>4. Lok Sabha has no control over the revocation of the National Emergency.<br>How many statements given above are correct?</b>',
+    options:['Only one','Only two','Only three ','All four'],
+    answer:1
+   },
+   {
+    q:'<b>Which of the following is not an example of exercise of Fundamental Right?</b>',
+    options:['A farmer sells his farm and starts a business.','A person from Gujarat moves to Maharashtra and settles there.','A person inherits property from his parents. ','A person refuses to believe in any religion'],
+    answer:3
+   }
+
+   // completed 50
+
+
+				
+                // Add other questions here
+            ];
+
+            // set questions and options and question number
+            totalQuestionSpan.innerHTML = questions.length;
+
+            function load(){
+                questionNumberSpan.innerHTML = questionIndex + 1;
+                question.innerHTML = questions[questionIndex].q;   
+                op1.innerHTML = questions[questionIndex].options[0];
+                op2.innerHTML = questions[questionIndex].options[1];
+                op3.innerHTML = questions[questionIndex].options[2];
+                op4.innerHTML = questions[questionIndex].options[3];
+            }
+			const hintButtons = document.querySelectorAll(".hint-btn");
+const hintMessages = [
+    "Hint for question"+
+	"1.", // Add hint messages for each question
+    "26Consider the following statements:<br><br>1. Some mushrooms have medicinal properties.<br>2. Some mushrooms have psycho-active properties.<br>3. Some mushrooms have insecticidal properties.<br>4. Some mushrooms have bioluminescent properties.<br><br>How many of the above statements are correct?",
+    // Add more hint messages as needed
+];
+
+function showHint() {
+    const questionIndex = parseInt(questionNumberSpan.innerHTML) - 1;
+    const hintText = document.getElementById("hintText");
+    hintText.innerHTML = hintMessages[questionIndex];
+    document.getElementById("hintBox").style.display = "block";
+}
+
+function hideHintBox() {
+    document.getElementById("hintBox").style.display = "none";
+}
+
+            function check(element){
+                if(element.id == questions[questionIndex].answer){
+                    element.classList.add("correct");
+                    updateAnswerTracker("correct")
+                    score++;
+                    console.log("score:" + score)
+                } else{
+                    element.classList.add("wrong");
+                    updateAnswerTracker("wrong")
+                }
+                disabledOptions()
+            }
+
+            function disabledOptions(){
+                for(let i = 0; i < options.length; i++) {
+                    options[i].classList.add("enableOptions");
+                    if(options[i].id == questions[questionIndex].answer){
+                        options[i].classList.add("correct");
+                    }
+                }
+            }
+
+            function enableOptions(){
+                for(let i = 0; i < options.length; i++) {
+                    options[i].classList.remove("enableOptions", "correct", "wrong");
+                }
+            }
+
+            function validate(){
+                if(!options[0].classList.contains("enableOptions")){
+                    alert("Please Select one option")
+                } else{
+                    enableOptions();
+                    questionIndex++;
+                    if(questionIndex < questions.length) {
+                        load();
+                    } else {
+                        quizOver();
+                    }
+                }
+            }
+
+            function next(){
+                validate();
+            }
+
+            function updateAnswerTracker(className){
+                const div = document.createElement("div");
+                answerTrackerContainer.appendChild(div);
+                div.classList.add(className);
+            }
+
+            function quizOver(){
+                document.querySelector(".quiz-over").classList.add("show");
+                correctAnswerSpan.innerHTML = score;
+                totalQuestionSpan2.innerHTML = questions.length;
+                percentage.innerHTML = (score / questions.length) * 100 + "%";
+            }
+
+            function tryAgain(){
+                window.location.reload();
+            }
+
+            window.onload = function(){
+                load();
+            }
+        </script>
+    </div>
+</body>
+</html>
